@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+*.bin
+*.pth
+.env
+data_v2/
+data_intents/
+*.jsonl
+.venv/

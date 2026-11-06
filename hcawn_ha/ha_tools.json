@@ -1,0 +1,210 @@
+[
+ {
+  "name": "HassTurnOn",
+  "description": "Turn on, open or start a device",
+  "params": {
+   "name": {
+    "type": "string",
+    "description": "",
+    "enum": null
+   }
+  },
+  "required": [
+   "name"
+  ]
+ },
+ {
+  "name": "HassTurnOff",
+  "description": "Turn off, close or stop a device",
+  "params": {
+   "name": {
+    "type": "string",
+    "description": "",
+    "enum": null
+   }
+  },
+  "required": [
+   "name"
+  ]
+ },
+ {
+  "name": "HassToggle",
+  "description": "Toggle a device on or off",
+  "params": {
+   "name": {
+    "type": "string",
+    "description": "",
+    "enum": null
+   }
+  },
+  "required": [
+   "name"
+  ]
+ },
+ {
+  "name": "HassLightSet",
+  "description": "Set light brightness (0-100) or color",
+  "params": {
+   "name": {
+    "type": "string",
+    "description": "",
+    "enum": null
+   },
+   "brightness": {
+    "type": "integer",
+    "description": "",
+    "enum": null
+   },
+   "color": {
+    "type": "string",
+    "description": "",
+    "enum": null
+   }
+  },
+  "required": [
+   "name"
+  ]
+ },
+ {
+  "name": "HassClimateSetTemperature",
+  "description": "Set the target temperature",
+  "params": {
+   "name": {
+    "type": "string",
+    "description": "",
+    "enum": null
+   },
+   "temperature": {
+    "type": "number",
+    "description": "",
+    "enum": null
+   }
+  },
+  "required": [
+   "temperature"
+  ]
+ },
+ {
+  "name": "HassHumidifierSetpoint",
+  "description": "Set the target humidity in percent",
+  "params": {
+   "name": {
+    "type": "string",
+    "description": "",
+    "enum": null
+   },
+   "humidity": {
+    "type": "integer",
+    "description": "",
+    "enum": null
+   }
+  },
+  "required": [
+   "humidity"
+  ]
+ },
+ {
+  "name": "HassListAddItem",
+  "description": "Add an item to a list",
+  "params": {
+   "name": {
+    "type": "string",
+    "description": "",
+    "enum": null
+   },
+   "item": {
+    "type": "string",
+    "description": "",
+    "enum": null
+   }
+  },
+  "required": [
+   "name",
+   "item"
+  ]
+ },
+ {
+  "name": "HassVacuumStart",
+  "description": "Start the vacuum",
+  "params": {
+   "name": {
+    "type": "string",
+    "description": "",
+    "enum": null
+   }
+  },
+  "required": [
+   "name"
+  ]
+ },
+ {
+  "name": "HassVacuumReturnToBase",
+  "description": "Send the vacuum back to its base",
+  "params": {
+   "name": {
+    "type": "string",
+    "description": "",
+    "enum": null
+   }
+  },
+  "required": [
+   "name"
+  ]
+ },
+ {
+  "name": "HassMediaPause",
+  "description": "Pause playback",
+  "params": {
+   "name": {
+    "type": "string",
+    "description": "",
+    "enum": null
+   }
+  },
+  "required": [
+   "name"
+  ]
+ },
+ {
+  "name": "HassMediaUnpause",
+  "description": "Resume playback",
+  "params": {
+   "name": {
+    "type": "string",
+    "description": "",
+    "enum": null
+   }
+  },
+  "required": [
+   "name"
+  ]
+ },
+ {
+  "name": "HassMediaNext",
+  "description": "Next track",
+  "params": {
+   "name": {
+    "type": "string",
+    "description": "",
+    "enum": null
+   }
+  },
+  "required": [
+   "name"
+  ]
+ },
+ {
+  "name": "HassMediaPrevious",
+  "description": "Previous track",
+  "params": {
+   "name": {
+    "type": "string",
+    "description": "",
+    "enum": null
+   }
+  },
+  "required": [
+   "name"
+  ]
+ }
+]

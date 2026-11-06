@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+<defs><radialGradient id="g" cx="50%" cy="42%" r="60%"><stop offset="0" stop-color="#20290f"/><stop offset="1" stop-color="#080b09"/></radialGradient></defs>
+<rect width="800" height="800" fill="url(#g)"/>
+<rect x="235" y="170" width="331" height="331" rx="100" fill="#b8f04e"/>
+<rect x="344" y="279" width="113" height="113" rx="30" fill="#080b09"/>
+<text x="400" y="604" text-anchor="middle" font-family="Ubuntu,'Fira Sans','Segoe UI',system-ui,sans-serif" font-weight="700" font-size="84" fill="#eef3ec">hCAWN</text>
+<text x="400" y="668" text-anchor="middle" font-family="Ubuntu,'Fira Sans','Segoe UI',system-ui,sans-serif" font-weight="700" font-size="54" fill="#b8f04e">HA</text>
+</svg>
