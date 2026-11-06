@@ -30,8 +30,9 @@ from concurrent.futures import ThreadPoolExecutor
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "hcawn_ha"))
-import shim                                               # hcawn-fc glue: provides fc_common
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src"))
+from hcawn_ha._core import fc_common                        # prompt format of the engine package
+sys.modules.setdefault("fc_common", fc_common)
 from convert_v2 import HA_TOOLS                      # the same 13 tools the converted V2 data uses
 
 URL = "https://openrouter.ai/api/v1/chat/completions"

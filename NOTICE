@@ -1,0 +1,14 @@
+hcawn-ha
+Copyright 2026 CAWN AI (https://cawnai.com)
+
+This product includes a model that was trained on:
+
+  * Home-Assistant-Requests-V2 by acon96 (https://huggingface.co/datasets/acon96/Home-Assistant-Requests-V2), MIT License.
+    The requests and tool calls were converted to a flat format, repaired by rules, filtered, and extended with paraphrases.
+
+  * Paraphrases of the training requests that were generated with a large language model (Gemini) and filtered automatically.
+
+  * Template-generated requests for locks, gates, whole rooms and short phrasing.
+
+The model weights (downloaded separately from Hugging Face) are provided under the license stated on the model card,
+https://huggingface.co/datatab/hcawn-ha. The source code is provided under the Apache License 2.0, see LICENSE.

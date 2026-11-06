@@ -1,0 +1,15 @@
+{
+ "repo": "datatab/hcawn-ha",
+ "files": {
+  "int8": {
+   "file": "int8.bin",
+   "sha256": "04391b1b33a4f8cd4c57b11b66c347ccf020c25c83eda5d6a3d34e5303db8d9b",
+   "size": 5984373
+  },
+  "int4": {
+   "file": "int4.bin",
+   "sha256": "6e9786e3808627ac3d2259c9b021aaca4179d273c6c2b1cc7f81ebbcc0304a0e",
+   "size": 4089045
+  }
+ }
+}

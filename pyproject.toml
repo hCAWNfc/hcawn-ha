@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hcawn-ha"
+version = "0.1.0"
+description = "Tiny CPU model (5.7M parameters) that turns spoken Home Assistant commands into service calls"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+authors = [{ name = "CAWN AI" }]
+keywords = ["home assistant", "smart home", "voice control", "function calling", "on-device", "cpu", "small language model", "byte-level"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3",
+  "Topic :: Home Automation",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = ["numpy>=1.21"]
+
+[project.urls]
+Homepage = "https://cawnai.com"
+Repository = "https://github.com/hCAWNfc/hcawn-ha"
+Issues = "https://github.com/hCAWNfc/hcawn-ha/issues"
+Weights = "https://huggingface.co/datatab/hcawn-ha"
+Demo = "https://huggingface.co/spaces/datatab/hcawn-ha-demo"
+
+[project.scripts]
+hcawn-ha = "hcawn_ha.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+hcawn_ha = ["data/*.json", "demo/*.html", "demo/*.svg", "demo/*.png"]

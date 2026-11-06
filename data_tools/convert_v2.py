@@ -14,8 +14,9 @@ import random
 import re
 import sys
 
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "hcawn_ha"))
-import shim                                               # hcawn-fc glue: provides fc_common
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src"))
+from hcawn_ha._core import fc_common                        # prompt format of the engine package
+sys.modules.setdefault("fc_common", fc_common)
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from fc_common import normalize_tool, render_tool        # the trainer prompt format lives in sft/fc/fc_common.py
 

@@ -1,9 +1,6 @@
-"""python test_resolver.py   -> unit tests + a stress test on a synthetic house (live progress)."""
-import os
-import sys
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "hcawn_ha"))
+"""python tests/resolver_checks.py   -> unit tests + a stress test on a synthetic house (live progress)."""
 import random, sys, time
-from ha_resolver import resolve, resolve_calls, choose
+from hcawn_ha.resolver import resolve, resolve_calls, choose
 
 def E(eid, name, area=None, **kw):
     return {"entity_id": eid, "name": name, "area": area, "aliases": kw.get("aliases", []), "device_class": kw.get("dc")}

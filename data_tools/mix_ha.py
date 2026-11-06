@@ -10,8 +10,9 @@ import random
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "hcawn_ha"))
-import shim                                               # hcawn-fc glue: provides fc_common
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src"))
+from hcawn_ha._core import fc_common                        # prompt format of the engine package
+sys.modules.setdefault("fc_common", fc_common)
 from fc_common import render_output, render_prompt
 
 TRAIN = ["ha_en_train.jsonl", "ha_para_train.jsonl", "ha_gen_train.jsonl"]

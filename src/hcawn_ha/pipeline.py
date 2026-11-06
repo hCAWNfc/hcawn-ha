@@ -1,18 +1,15 @@
 #!/usr/bin/env python3
-"""hcawn_ha pipeline: one sentence in -> Home Assistant service calls (or a question) out.
-    python ha_pipeline.py int8.bin [registry.json] [--gate 0.7]      # interactive; no registry.json = small demo house
-    python ha_pipeline.py --selftest                                                      # logic tests without the model
+"""hcawn-ha pipeline: one sentence in -> Home Assistant service calls (or a question) out.
+    hcawn-ha chat [int8|int4|path.bin] [registry.json] [--gate 0.7]      # interactive; no registry.json = small demo house
+    hcawn-ha selftest                                                    # logic tests without the model
 Steps: split into commands -> model (per command, with confidence) -> direction guard -> resolver (registry) -> services.
 Result of handle():
   {"execute": [service calls to run now], "confirm": [service calls that need a spoken 'yes' first],
    "ask": "question for the user or ''", "understood": [model calls], "reason": "why asked, if asked"}
 Nothing is executed when the model is unsure (confidence < gate), when the verb contradicts the tool, when a color/number is invalid,
 or when the device is ambiguous. Locks / alarms are never converted to a service in v1."""
-import json, os, re, sys, time
-HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, HERE)
-import shim                                      # environment + hcawn-fc engine glue (must come first)
-from ha_resolver import resolve_calls
+import json, re, sys, time
+from .resolver import resolve_calls
 
 SEP = re.compile(r"(?<=[.!?])\s+|\s*;\s*|\s*,\s*(?:and\s+|then\s+|also\s+|plus\s+)?|\s+(?:and\s+then|and\s+also|and|then|also|plus)\s+", re.I)
 ACT = re.compile(r"\b(?:turn|switch|set|make|change|dim|brighten|flip|toggle|start|stop|pause|resume|unpause|skip|play|next|previous|add|put|send|return|dock|open|close|kill|power|shut|lower|raise|get|run|begin|on|off|up|down|clean|vacuum|mop|bring|keep|hold|freeze|halt|enable|disable|activate|deactivate)\b", re.I)
@@ -67,15 +64,18 @@ def direction_conflict(text, call):
 
 
 class HAPipeline:
-    def __init__(self, model_bin, registry, gate=0.7, generate=None):
-        self.registry, self.gate = registry, gate
-        if generate is not None:                       # tests
+    def __init__(self, model="int8", registry=None, gate=0.7, generate=None, threads=1):
+        """model: "int8", "int4" or a path to a .bin file. registry: list of devices
+        {"entity_id","name","area","aliases","device_class"}. generate: replaces the model (tests)."""
+        self.registry, self.gate = registry if registry is not None else demo_registry(), gate
+        if generate is not None:
             self._generate = generate
             return
-        self._generate = shim.make_generate(model_bin, threads=4)
+        from ._engine import make_generate
+        self._generate = make_generate(model, threads=threads)
 
     def handle(self, text):
-        from fc_common import parse_calls
+        from ._core.fc_common import parse_calls
         t0 = time.perf_counter()
         res = {"execute": [], "confirm": [], "ask": "", "understood": [], "reason": "", "ms": 0, "trace": [], "resolved": [], "min_conf": None}
         calls, scores = [], []
@@ -165,14 +165,11 @@ def selftest():
     return ok
 
 
-def main():
-    A = sys.argv[1:]
-    if "--selftest" in A:
-        sys.exit(0 if selftest() else 1)
+def chat(A):
     gate = float(A[A.index("--gate") + 1]) if "--gate" in A else 0.7
     pos = [a for i, a in enumerate(A) if not a.startswith("--") and not (i > 0 and A[i - 1] == "--gate")]
     reg = json.load(open(pos[1])) if len(pos) > 1 else demo_registry()
-    pipe = HAPipeline(pos[0], reg, gate)
+    pipe = HAPipeline(pos[0] if pos else "int8", reg, gate)
     print(f"{len(reg)} devices, gate {gate}. Type a sentence (empty line = quit). Risky actions wait for yes / no.")
     pending = []
     while True:
@@ -205,6 +202,3 @@ def main():
         if r["ask"]: print("  ASK     ", r["ask"], f" [{r['reason']}]")
         print(f"  total {r['ms']} ms\n")
 
-
-if __name__ == "__main__":
-    main()

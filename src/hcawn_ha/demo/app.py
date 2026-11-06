@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
 """hcawn_ha local demo: a simulated house you control by typing. Everything runs on this computer (CPU, no network).
-    python app.py [int8.bin] [--port 8765] [--gate 0.7]
+    hcawn-ha demo [int8|int4|path.bin] [--port 8765] [--gate 0.7]
 Open http://127.0.0.1:8765 (it opens by itself)."""
 import copy, json, os, re, sys, threading, time, webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, HERE)
-sys.path.insert(0, os.path.normpath(os.path.join(HERE, "..", "hcawn_ha")))
-import house
+from . import house
 
 LOCK = threading.Lock()
 S = {"model": None, "pipe": None, "state": house.initial_state(), "pending": [], "gate": 0.7, "paths": {}, "pipes": {}}
@@ -87,7 +85,7 @@ def models_info():
 
 def get_pipe(name):
     if name not in S["pipes"]:
-        from ha_pipeline import HAPipeline
+        from ..pipeline import HAPipeline
         print(f"loading {S['paths'][name]} ...", flush=True)
         S["pipes"][name] = HAPipeline(S["paths"][name], house.registry(), S["gate"])
     return S["pipes"][name]
@@ -195,25 +193,26 @@ def serve(pipe, port, gate=0.7, open_browser=True, model=None, paths=None):
         pass
 
 
-def main():
-    A = sys.argv[1:]
+def main(A=None):
+    from ..errors import HcawnError
+    from ..pipeline import HAPipeline
+    from ..weights import available_models, find_weights
+    A = sys.argv[1:] if A is None else A
     port = int(A[A.index("--port") + 1]) if "--port" in A else 8765
     gate = float(A[A.index("--gate") + 1]) if "--gate" in A else 0.7
     pos = [a for i, a in enumerate(A) if not a.startswith("--") and not (i > 0 and A[i - 1] in ("--port", "--gate"))]
-    binp = pos[0] if pos else os.path.join(HERE, "int8.bin")
-    if not os.path.exists(binp):
-        sys.exit(f"Model not found: {binp}\nDownload it first:  hf download datatab/hcawn-ha int8.bin int4.bin --local-dir demo\nor pass a path:  python app.py path/to/int8.bin")
-    from ha_pipeline import HAPipeline
-    print(f"loading {binp} ...", flush=True)
-    cur = _variant(binp)
-    paths = {cur: binp}
-    for v in ("int8", "int4"):                       # offer the sibling quantization if it sits next to the chosen file
-        sib = os.path.join(os.path.dirname(binp), f"{v}.bin")
-        if v not in paths and os.path.exists(sib):
-            paths[v] = sib
-    paths = dict(sorted(paths.items(), reverse=True))  # int8 first
-    serve(HAPipeline(binp, house.registry(), gate), port, gate, model=cur, paths=paths)
-
-
-if __name__ == "__main__":
-    main()
+    try:
+        if pos and pos[0] not in ("int8", "int4"):
+            binp = find_weights(pos[0]); paths = {_variant(binp): binp}      # an explicit file
+        else:
+            want = pos[0] if pos else ("int8" if "int8" in available_models() else (available_models() or ["int8"])[0])
+            binp = find_weights(want); paths = {want: binp}
+            for v in ("int8", "int4"):                                        # offer the other quantization too when it is on disk
+                if v not in paths and v in available_models():
+                    paths[v] = find_weights(v)
+    except HcawnError as e:
+        sys.exit(str(e))
+    paths = dict(sorted(paths.items(), reverse=True))                          # int8 first
+    cur = next(iter(paths)) if not pos or pos[0] not in paths else pos[0]
+    print(f"loading {paths[cur]} ...", flush=True)
+    serve(HAPipeline(paths[cur], house.registry(), gate), port, gate, model=cur, paths=paths)
