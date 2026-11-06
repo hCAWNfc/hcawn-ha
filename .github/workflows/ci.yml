@@ -1,0 +1,30 @@
+name: tests
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python: ["3.10", "3.12"]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install the engine package
+        run: python -m pip install hcawn-fc
+      - name: Resolver tests
+        run: python tests/test_resolver.py
+      - name: Pipeline self-test (no weights needed)
+        run: python hcawn_ha/ha_pipeline.py --selftest
+      - name: Demo imports
+        run: python -c "import sys; sys.path[:0]=['hcawn_ha','demo']; import app, house; print('demo ok')"
