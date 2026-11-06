@@ -2,6 +2,14 @@
 
 # hcawn-ha
 
+<p align="center">
+  <a href="https://pypi.org/project/hcawn-ha/"><img alt="PyPI" src="https://img.shields.io/pypi/v/hcawn-ha?style=for-the-badge&label=pip%20install%20hcawn-ha&color=1f2937"></a>
+  <a href="https://huggingface.co/spaces/datatab/hcawn-ha-demo"><img alt="Try it live" src="https://img.shields.io/badge/%E2%96%B6%20Try%20it%20live-Space%20demo-2563eb?style=for-the-badge"></a>
+  <a href="https://huggingface.co/datatab/hcawn-ha"><img alt="Weights" src="https://img.shields.io/badge/weights-Hugging%20Face-1f2937?style=for-the-badge"></a>
+  <a href="https://cawnai.com"><img alt="Website" src="https://img.shields.io/badge/cawnai.com-1f2937?style=for-the-badge"></a>
+  <a href="https://github.com/hCAWNfc/hcawn-ha/actions/workflows/test.yml"><img alt="Tests" src="https://img.shields.io/github/actions/workflow/status/hCAWNfc/hcawn-ha/test.yml?style=for-the-badge&label=tests"></a>
+</p>
+
 **A 5.7M-parameter model that turns spoken Home Assistant commands into service calls.** 6.0 MB (int8) or 4.1 MB (int4), runs on a CPU, no cloud, no account.
 
 It ships with the pieces around the model: a **resolver** that maps what you said to your devices, a **pipeline** with a confidence gate and safety rules, and a **simulated house** you can talk to in the browser.
@@ -11,6 +19,10 @@ pip install hcawn-ha
 hcawn-ha download int8        # weights from huggingface.co/datatab/hcawn-ha (SHA-256 verified)
 hcawn-ha demo                 # opens the simulated house in your browser
 ```
+
+![The hcawn-ha demo: a simulated house on the left, the raw model output, confidence and matched device on the right](https://raw.githubusercontent.com/hCAWNfc/hcawn-ha/main/assets/demo.png)
+
+*The demo house. Type or speak a command; the right panel shows the model's raw JSON, its confidence, the device it matched and what happened. Switch int8 / int4, compare them side by side, or add your own devices. Locks and the garage door always ask for a yes first. No install? [Try it in your browser](https://huggingface.co/spaces/datatab/hcawn-ha-demo).*
 
 The engine ships compiled for **Linux x86-64**. On other systems `pip install` gives you the resolver and pipeline only (pass your own `generate` function), and the model runs on the [Hugging Face Space](https://huggingface.co/spaces/datatab/hcawn-ha-demo).
 
